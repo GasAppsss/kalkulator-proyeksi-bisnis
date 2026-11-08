@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contoh: kalkulator di dalam iframe</title>
+<style>
+  :root { color-scheme: light dark; --bg: #fff; --ink: #14212b; --muted: #55656f; --line: #d5dde1; --code: #f1f4f5; }
+  [data-tema="gelap"] { --bg: #0b1114; --ink: #e8eef1; --muted: #9bacb5; --line: #2a3943; --code: #141d22; }
+  body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+  .hero { padding: 56px 20px; background: #123a66; color: #fff; text-align: center; }
+  .hero h1 { margin: 0 0 8px; font-size: clamp(26px, 5vw, 40px); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 64px; }
+  h2 { margin-top: 40px; }
+  pre { background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow: auto; font-size: 13px; line-height: 1.5; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
+  button { font: inherit; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+  #kpb-frame { width: 100%; height: 700px; border: 0; display: block; }
+  #log { max-height: 160px; font-size: 12px; }
+  .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="hero"><h1>Halaman produk Anda</h1><p>Ini contoh landing page. Kalkulator ada di bagian bawah, di dalam iframe.</p></div>
+<div class="wrap">
+  <p class="muted">Contoh ini memperlihatkan cara memasang <code>iframe.html</code> dengan tinggi otomatis, sinkron tema, dan penerimaan peristiwa untuk analitik.</p>
+  <h2>Hitung proyeksi usaha Anda</h2>
+  <div class="bar"><span class="muted">Tema halaman ini:</span> <button id="t-terang" type="button">Terang</button> <button id="t-gelap" type="button">Gelap</button></div>
+  <iframe id="kpb-frame" src="iframe.html" title="Kalkulator proyeksi bisnis" loading="lazy"></iframe>
+
+  <h2>Peristiwa yang diterima halaman ini</h2>
+  <p class="muted">Tidak berisi angka usaha atau nama pengguna. Hubungkan ke Google Analytics, Plausible, dan sejenisnya di tempat bertanda KIRIM KE ANALITIK.</p>
+  <pre id="log">(belum ada)</pre>
+
+  <h2>Kodenya</h2>
+  <pre>&lt;iframe id="kpb-frame" src="https://kalkulator.situsanda.com/iframe.html"
+        title="Kalkulator proyeksi bisnis" style="width:100%;height:700px;border:0" loading="lazy"&gt;&lt;/iframe&gt;
+
+&lt;script&gt;
+(function () {
+  var f = document.getElementById('kpb-frame');
+  var ASAL = new URL(f.src, location.href).origin;            // asal kalkulator
+  window.addEventListener('message', function (e) {
+    if (e.origin !== ASAL || e.source !== f.contentWindow) return;   // abaikan pesan dari tempat lain
+    var d = e.data;
+    if (!d || d.kpb !== 1) return;
+    if (d.jenis === 'tinggi') f.style.height = d.tinggi + 'px';      // iframe mengikuti tinggi isi
+    if (d.jenis === 'gulir')  window.scrollTo({ top: f.getBoundingClientRect().top + window.scrollY + d.y - 12, behavior: 'smooth' });
+    if (d.jenis === 'siap')   f.contentWindow.postMessage({ kpb: 1, jenis: 'tema', tema: 'terang' }, ASAL);  // tema awal
+    if (d.jenis === 'event')  { /* KIRIM KE ANALITIK: d.event.nama dan d.event.props */ }
+  });
+})();
+&lt;/script&gt;</pre>
+</div>
+<script>
+(function () {
+  var f = document.getElementById('kpb-frame');
+  var ASAL = new URL(f.src, location.href).origin;
+  var log = document.getElementById('log'), baris = [];
+  var tema = 'terang';
+  function kirimTema() { try { f.contentWindow.postMessage({ kpb: 1, jenis: 'tema', tema: tema }, ASAL); } catch (e) {} }
+  function setTema(t) { tema = t; document.documentElement.setAttribute('data-tema', t); kirimTema(); }
+  document.getElementById('t-terang').addEventListener('click', function () { setTema('terang'); });
+  document.getElementById('t-gelap').addEventListener('click', function () { setTema('gelap'); });
+  window.addEventListener('message', function (e) {
+    if (e.origin !== ASAL || e.source !== f.contentWindow) return;
+    var d = e.data;
+    if (!d || d.kpb !== 1) return;
+    if (d.jenis === 'tinggi') f.style.height = d.tinggi + 'px';
+    if (d.jenis === 'gulir') window.scrollTo({ top: f.getBoundingClientRect().top + window.scrollY + d.y - 12, behavior: 'smooth' });
+    if (d.jenis === 'siap') kirimTema();
+    if (d.jenis === 'event') {
+      baris.unshift(new Date().toLocaleTimeString('id-ID') + '  ' + d.event.nama + (d.event.props && Object.keys(d.event.props).length ? '  ' + JSON.stringify(d.event.props) : ''));
+      log.textContent = baris.slice(0, 40).join('\n');
+    }
+  });
+})();
+</script>
+</body>
+</html>

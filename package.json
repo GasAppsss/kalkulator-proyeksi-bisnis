@@ -1,0 +1,22 @@
+{
+  "name": "kalkulator-proyeksi-bisnis",
+  "version": "2.0.0",
+  "description": "Kalkulator proyeksi bisnis dari HPP sampai BEP: aplikasi web tanpa peladen, satu berkas JS",
+  "scripts": {
+    "build": "node build.js",
+    "test": "node build.js && node test/semua.cjs",
+    "potret": "node tools/potret.cjs"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.3.0"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.2",
+    "esbuild": "^0.21.5",
+    "playwright": "^1.56.0",
+    "postcss": "^8.5.31",
+    "xlsx": "^0.18.5"
+  },
+  "private": true
+}

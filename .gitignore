@@ -1,0 +1,8 @@
+# dependensi dan keluaran uji
+node_modules/
+shots/
+*.log
+
+# keluaran build: hanya paket siap-unggah (dist/paket) yang disimpan; sisanya dibuat ulang oleh `npm run build`
+dist/*
+!dist/paket/

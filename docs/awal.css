@@ -1,0 +1,8 @@
+/* Gaya halaman pembuka: hanya latar dan teks "memuat". Kalkulator sendiri memakai gayanya di dalam shadow root.
+   Dipisah dari index.html agar halaman berjalan di bawah CSP ketat (style-src 'self') tanpa 'unsafe-inline'. */
+html { color-scheme: light dark; }
+body { margin: 0; background: #F4F5FA; }
+@media (prefers-color-scheme: dark) { body { background: #0C0F1E; color: #ECEEF9; } }
+.kpb-muat { padding: 24px; font: 15px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+/* di dalam iframe, latar halaman transparan agar sudut membulat kalkulator menyatu dengan latar situs induk */
+body.iframe { background: transparent; }

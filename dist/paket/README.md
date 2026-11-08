@@ -30,6 +30,10 @@ Setelah memastikan semuanya berjalan, Anda boleh menghapus `README.md`, `contoh-
 3. **Ubah `config.js`** bila perlu (merek, tombol ajakan bertindak, analitik). Tidak perlu membangun ulang apa pun.
 4. **Pasang header keamanan** dari `_headers` atau `server/` (lihat bagian Keamanan). Ini satu-satunya langkah yang bergantung pada hosting Anda.
 
+### GitHub Pages
+
+Letakkan isi paket ini di folder `docs/` repositori Anda (atau di akar repositori), buka Settings > Pages, pilih Source "Deploy from a branch", pilih cabang `main` dan folder `/docs` (atau `/ (root)`), lalu simpan. Halaman tayang di `https://akun.github.io/nama-repositori/`; karena semua alamat berkas relatif, aplikasi berjalan dari subfolder itu tanpa pengaturan tambahan. Tambahkan berkas kosong bernama `.nojekyll` di folder yang sama: tanpanya GitHub memproses berkas dengan Jekyll dan membuang berkas berawalan garis bawah seperti `_headers`. GitHub Pages tidak bisa memasang header kustom (lihat Keamanan) dan menyimpan berkas di cache sekitar 10 menit, jadi pembaruan baru terlihat setelah itu. Repositori privat hanya bisa memakai Pages dengan paket GitHub berbayar.
+
 ### Pratinjau saat tautan dibagikan (opsional)
 
 Agar tautan ke `index.html` tampil dengan judul dan gambar di WhatsApp, Facebook, atau X, buka `index.html`, hapus tanda komentar pada blok yang diawali "Pratinjau saat tautan dibagikan", lalu ganti `https://situsanda.com/kalkulator/` dengan alamat folder ini di domain Anda. Aplikasi pembaca tautan hanya menerima alamat lengkap, bukan alamat relatif, karena itu blok ini dimatikan sampai alamat Anda diketahui. Gambar `og-image.png` (1200 x 630) sudah ada di folder; gantilah dengan gambar merek Anda bila perlu, dengan ukuran yang sama. CSP tidak perlu diubah. Setelah diunggah, uji dengan mengirim tautan ke diri sendiri; aplikasi pembaca tautan menyimpan pratinjau lama beberapa hari, jadi tambahkan `?v=2` pada tautan bila gambar belum berubah. `iframe.html` sengaja tidak diindeks (`noindex`) dan tidak memerlukan blok ini.

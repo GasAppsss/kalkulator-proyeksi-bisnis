@@ -51,6 +51,22 @@ const sidik = require('crypto').createHash('sha1');
 [...INTI, ...PENDUKUNG].forEach((f) => sidik.update(f).update(fs.readFileSync(dir('dist/paket/' + f))));
 tulis('dist/paket/sw.js', baca('paket-src/sw.js').replace('__VERSI__', VERSI_APP + '-' + sidik.digest('hex').slice(0, 8)).replace('__PENDUKUNG__', JSON.stringify(PENDUKUNG)));
 
+/* ---- salinan untuk GitHub Pages (Settings > Pages > Deploy from a branch > main > /docs) ----
+   Isinya sama dengan dist/paket, kecuali blok pratinjau tautan (canonical, og:image, twitter:card) di index.html yang sudah
+   diaktifkan dengan alamat Pages. Alamat bawaan mengikuti repositori GitHub proyek ini; ganti lewat PAGES_URL=https://... node build.js.
+   .nojekyll mencegah Jekyll mengolah berkas (berkas berawalan garis bawah seperti _headers akan dibuang tanpanya).
+   docs/ dibuat ulang setiap build; CNAME (domain khusus yang diatur lewat Settings > Pages) dipertahankan. */
+const PAGES_URL = (process.env.PAGES_URL || 'https://gasappsss.github.io/kalkulator-proyeksi-bisnis/').replace(/\/*$/, '/');
+const cnameLama = fs.existsSync(dir('docs/CNAME')) ? baca('docs/CNAME') : null;
+fs.rmSync(dir('docs'), { recursive: true, force: true });
+fs.cpSync(dir('dist/paket'), dir('docs'), { recursive: true });
+const indeks = baca('docs/index.html');
+const indeksPages = indeks.replace(/<!-- Pratinjau saat tautan dibagikan[\s\S]*?\n(<link rel="canonical"[\s\S]*?)\n-->/, '$1').split('https://situsanda.com/kalkulator/').join(PAGES_URL);
+if (indeksPages === indeks || /situsanda\.com|<!-- Pratinjau/.test(indeksPages)) throw new Error('blok pratinjau tautan di paket-src/index.html tidak ditemukan atau gagal diaktifkan untuk docs/');
+tulis('docs/index.html', indeksPages);
+tulis('docs/.nojekyll', '');
+if (cnameLama !== null) tulis('docs/CNAME', cnameLama);
+
 /* ---- artifact ---- */
 const frag = baca('src/artifact.src.html').replace('/*__JS__*/', () => bundel(true).replace(/<\/script/gi, '<\\/script'));
 tulis('dist/artifact.html', frag);

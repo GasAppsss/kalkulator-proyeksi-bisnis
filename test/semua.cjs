@@ -15,6 +15,7 @@ const DAFTAR = [
   ['kontras', 'kontras.cjs', 'rasio kontras warna tema terang dan gelap'],
   ['tanam', 'tanam.cjs', 'ditanam di situs lain: CSS tuan rumah yang nakal, CSP ketat, iframe, kolom sempit'],
   ['pwa', 'pwa.cjs', 'luring, pemasangan, pembaruan, pembatalan'],
+  ['pages', 'pages.cjs', 'GitHub Pages: isi docs/, berjalan dari alamat berfolder, service worker dan offline di subfolder'],
   ['artifact', 'artifact.cjs', 'versi artifact (unduhan lewat claude.use, CDN, tanpa riwayat)'],
   ['paket', 'paket.cjs', 'isi paket, dokumentasi sesuai kode, header server, contoh berjalan'],
 ];

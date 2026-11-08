@@ -1,0 +1,19 @@
+PERANGKAT LUNAK PIHAK KETIGA DALAM PAKET INI
+============================================
+
+Paket ini tidak memuat skrip, font, atau gambar dari server pihak ketiga saat dijalankan. Dua komponen berikut
+disertakan sebagai berkas dan disajikan dari domain Anda sendiri. Teks lisensi lengkapnya ada di folder lisensi/.
+
+1. SheetJS Community Edition 0.18.5  (vendor/xlsx.mini.min.js)
+   Dipakai untuk membuat berkas Excel (.xlsx).
+   Hak cipta (C) 2012-sekarang SheetJS LLC. Lisensi: Apache License 2.0.
+   Lisensi: lisensi/sheetjs-Apache-2.0.txt   Situs: https://sheetjs.com
+
+2. Plus Jakarta Sans  (fonts/plus-jakarta-sans-*.woff2)
+   Font teks antarmuka, subset Latin.
+   Hak cipta 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans).
+   Lisensi: SIL Open Font License 1.1.
+   Lisensi: lisensi/plus-jakarta-sans-OFL-1.1.txt
+
+Berkas font diambil dari paket @fontsource (lisensi tiap font tetap OFL 1.1).
+Menyajikan font dan pustaka ini bersama aplikasi diizinkan oleh lisensi masing-masing; jangan menjual font itu sendiri.

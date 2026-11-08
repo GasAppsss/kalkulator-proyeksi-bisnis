@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contoh: kalkulator ditanam langsung di halaman</title>
+<style>
+  body { margin: 0; font: 17px/1.7 Georgia, "Times New Roman", serif; color: #222; background: #fff; text-align: center; }
+  h1, h2 { font-family: Georgia, serif; letter-spacing: -.5px; }
+  .hero { padding: 56px 20px; background: #123a66; color: #fff; }
+  .kolom { max-width: 760px; margin: 0 auto; padding: 24px 20px 64px; text-align: left; }
+  pre { background: #f1f4f5; border: 1px solid #d5dde1; border-radius: 8px; padding: 14px; overflow: auto; font-size: 13px; line-height: 1.5; text-align: left; }
+  /* aturan halaman yang terlalu luas sengaja dipasang untuk menunjukkan bahwa kalkulator tetap tampil benar */
+  div, section { line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="hero"><h1>Halaman artikel Anda</h1><p>Kalkulator ditanam langsung (tanpa iframe) di kolom artikel selebar 760 px.</p></div>
+<div class="kolom">
+  <h2>Hitung proyeksi usaha Anda</h2>
+  <!-- 1. tempat kalkulator -->
+  <div id="kpb-root"></div>
+
+  <h2>Peristiwa yang diterima halaman ini</h2>
+  <pre id="log">(belum ada)</pre>
+
+  <h2>Kodenya</h2>
+  <pre>&lt;div id="kpb-root"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  window.KPB_CONFIG = {
+    mode: 'tertanam',              // tanpa judul h1 dan tanpa tombol Kembali peramban
+    kunci: 'situs',                // awalan penyimpanan; ganti bila ada beberapa kalkulator
+    merek: 'Nama Situs Anda',
+    cta: { judul: 'Siap menjalankan rencana ini?', isi: 'Catat penjualan dan stok usaha Anda dalam satu aplikasi.',
+           tombol: 'Coba gratis', href: 'https://contoh.com/daftar' },
+    onEvent: function (e) { /* KIRIM KE ANALITIK: e.nama dan e.props */ }
+  };
+&lt;/script&gt;
+&lt;script src="/kalkulator/kpb.js" defer&gt;&lt;/script&gt;</pre>
+</div>
+<script>
+  var baris = [];
+  window.KPB_CONFIG = {
+    mode: 'tertanam',
+    kunci: 'situs',
+    merek: 'Nama Situs Anda',
+    cta: { judul: 'Siap menjalankan rencana ini?', isi: 'Catat penjualan dan stok usaha Anda dalam satu aplikasi.', tombol: 'Coba gratis', href: 'https://contoh.com/daftar' },
+    onEvent: function (e) {
+      baris.unshift(new Date().toLocaleTimeString('id-ID') + '  ' + e.nama + (e.props && Object.keys(e.props).length ? '  ' + JSON.stringify(e.props) : ''));
+      document.getElementById('log').textContent = baris.slice(0, 40).join('\n');
+    }
+  };
+</script>
+<script src="kpb.js" defer></script>
+</body>
+</html>
